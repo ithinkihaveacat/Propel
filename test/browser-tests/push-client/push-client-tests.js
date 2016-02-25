@@ -31,58 +31,73 @@ describe('Test PushClient', () => {
   describe('Test PushClient construction', () => {
     it('should be able to create a new push client', function() {
       var pushClient = new window.goog.propel.Client();
-      window.chai.expect(pushClient._endpoint).to.equal(null);
-      window.chai.expect(pushClient._userId).to.equal(null);
+      window.chai.expect(pushClient._scope).to.contain('goog.push.scope/');
       window.chai.expect(pushClient._workerUrl).to.contain('dist/worker.js');
     });
 
     it('should be able to create a new push client with an empty object', function() {
       var pushClient = new window.goog.propel.Client({});
-
-      window.chai.expect(pushClient._endpoint).to.equal(null);
-      window.chai.expect(pushClient._userId).to.equal(null);
+      window.chai.expect(pushClient._scope).to.contain('goog.push.scope/');
       window.chai.expect(pushClient._workerUrl).to.contain('dist/worker.js');
     });
 
     it('should be able to create a new push client with additional options', function() {
       var pushClient = new window.goog.propel.Client({
-        endpointUrl: null,
-        userId: null,
         workerUrl: '/sw.js'
       });
-      window.chai.expect(pushClient._endpoint).to.equal(null);
-      window.chai.expect(pushClient._userId).to.equal(null);
+      window.chai.expect(pushClient._scope).to.contain('goog.push.scope/');
       window.chai.expect(pushClient._workerUrl).to.equal('/sw.js');
     });
 
-    it('should be able to create a new push client with just endpoint option', function() {
+    it('should be able to create a new push client with just workerUrl option', function() {
       var pushClient = new window.goog.propel.Client({
-        endpointUrl: null
+        scope: './custom.scope.push'
       });
-
-      window.chai.expect(pushClient._endpoint).to.eql(null);
-      window.chai.expect(pushClient._userId).to.equal(null);
-      window.chai.expect(pushClient._workerUrl).to.contain('dist/worker.js');
-    });
-
-    it('should be able to create a new push client with just userId option', function() {
-      var pushClient = new window.goog.propel.Client({
-        userId: null
-      });
-
-      window.chai.expect(pushClient._endpoint).to.eql(null);
-      window.chai.expect(pushClient._userId).to.equal(null);
+      window.chai.expect(pushClient._scope).to.contain('./custom.scope.push');
       window.chai.expect(pushClient._workerUrl).to.contain('dist/worker.js');
     });
 
     it('should be able to create a new push client with just workerUrl option', function() {
       var pushClient = new window.goog.propel.Client({
+        scope: './custom.scope.push',
         workerUrl: '/sw.js'
       });
-
-      window.chai.expect(pushClient._endpoint).to.eql(null);
-      window.chai.expect(pushClient._userId).to.equal(null);
+      window.chai.expect(pushClient._scope).to.contain('./custom.scope.push');
       window.chai.expect(pushClient._workerUrl).to.contain('/sw.js');
+    });
+  });
+
+  describe('Test Scenarios with Granted Permission State', () => {
+    it('should start and test granted tests with no manifest', function(done) {
+      this.timeout(0);
+
+      const windowHandler = window.open('/test/granted-no-manifest.html');
+      window.onTestResults = results => {
+        windowHandler.close();
+
+        if (results.failed.length > 0) {
+          console.error(results.failed);
+          done(new Error('Tests failed', results.failed));
+        } else {
+          done();
+        }
+      };
+    });
+
+    it('should start and test granted tests with a manifest', function(done) {
+      this.timeout(0);
+
+      const windowHandler = window.open('/test/granted-with-manifest.html');
+      window.onTestResults = results => {
+        windowHandler.close();
+
+        if (results.failed.length > 0) {
+          console.error(results.failed);
+          done(new Error('Tests failed', results.failed));
+        } else {
+          done();
+        }
+      };
     });
   });
 });

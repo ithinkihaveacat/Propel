@@ -145,7 +145,7 @@ export default class PushClient extends EventDispatch {
 
     let sub = await reg.pushManager.subscribe({userVisibleOnly: true})
     .catch((err) => {
-      this._dispatchStatusUpdate()
+      return this._dispatchStatusUpdate()
       .then(() => {
         // This is provide a more helpful message when work with Chrome + GCM
         if (err.message === 'Registration failed - no sender id provided') {
@@ -194,6 +194,8 @@ export default class PushClient extends EventDispatch {
     if (reg && reg.scope === this._scope) {
       return reg;
     }
+
+    return null;
   }
 
   /**

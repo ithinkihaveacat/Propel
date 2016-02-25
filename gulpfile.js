@@ -21,6 +21,7 @@ const source = require('vinyl-source-stream');
 const browserify = require('browserify');
 const babelify = require('babelify');
 const minimist = require('minimist');
+const spawn = require('child_process').spawn;
 
 const commandLineArgs = minimist(process.argv.slice(2));
 
@@ -46,6 +47,12 @@ const build = function(entry) {
     .pipe(source(entry))
     .pipe(gulp.dest('dist'));
 };
+
+gulp.task('test:manual', function() {
+  spawn('node', ['test/server/index.js'], {
+    stdio: 'inherit'
+  });
+});
 
 gulp.task('build-client', function() {
   return build('client.js');
