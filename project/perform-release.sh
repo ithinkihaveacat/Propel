@@ -99,19 +99,9 @@ echo "Please push the new package.json to MASTER"
 echo ""
 echo "-------------------------------"
 echo ""
-# For more details see: http://stackoverflow.com/questions/1593051/how-to-programmatically-determine-the-current-checked-out-git-branch
-currentBranch="$(git symbolic-ref HEAD 2>/dev/null)" ||
-currentBranch="(unnamed branch)"
-currentBranch=${currentBranch##refs/heads/}
 
-git checkout release-pr
 git add package.json
 git commit -m "Auto-generated PR to update package.json with new version - $PACKAGE_VERSION"
 git push -f origin release-pr
 
-npm install -g pullr
-pullr --new --from release-pr --into master --title 'Auto-generated PR to update the version number' --description 'Please review this change and ensure that package.json is the ONLY file changed AND that the version matches the latest tagged release.'
-
-git checkout $currentBranch package.json
-
-git checkout $currentBranch
+./node_modules/bin/pullr --new --from release-pr --into master --title 'Auto-generated PR to update the version number' --description 'Please review this change and ensure that package.json is the ONLY file changed AND that the version matches the latest tagged release.'
