@@ -23,7 +23,8 @@
     "run-sequence": "^1.1.5",
     "sinon": "^1.17.3",
     "vinyl-source-stream": "^1.1.0",
-    "which": "^1.2.4"
+    "which": "^1.2.4",
+    "selenium-webdriver": "^2.52.0"
   },
   "license": "Apache-2.0",
   "scripts": {
@@ -31,7 +32,4 @@
     "build-docs": "esdoc -c esdoc.json",
     "publish-docs": "esdoc -c esdoc.json && git subtree push --prefix docs/ origin gh-pages"
   },
-  "dependencies": {
-    "selenium-webdriver": "^2.52.0"
-  }
 }
