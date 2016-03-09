@@ -10,6 +10,11 @@ if [[ $1 != "patch" && $1 != "minor" && $1 != "major" ]] ; then
 fi
 
 echo ""
+echo "Sign into npm"
+echo ""
+npm adduser
+
+echo ""
 echo "Building Library"
 echo ""
 gulp default --throw-error
