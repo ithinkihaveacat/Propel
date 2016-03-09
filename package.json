@@ -1,6 +1,6 @@
 {
   "name": "propel",
-  "version": "0.0.11",
+  "version": "0.0.13",
   "description": "A library to support developers implementing Web Push notifications",
   "devDependencies": {
     "babel-eslint": "^4.1.3",
