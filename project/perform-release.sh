@@ -12,7 +12,7 @@ fi
 echo ""
 echo "Sign into npm"
 echo ""
-npm adduser
+npm whoami &>/dev/null || npm login
 
 echo ""
 echo "Building Library"
@@ -93,15 +93,11 @@ rm -rf ./tagged-release
 
 echo ""
 echo ""
-echo "-------------------------------"
-echo ""
-echo "Please push the new package.json to MASTER"
-echo ""
-echo "-------------------------------"
+echo "Generating a PR to update masters package.json"
 echo ""
 
 git add package.json
 git commit -m "Auto-generated PR to update package.json with new version - $PACKAGE_VERSION"
 git push -f origin release-pr
 
-./node_modules/bin/pullr --new --from release-pr --into master --title 'Auto-generated PR to update the version number' --description 'Please review this change and ensure that package.json is the ONLY file changed AND that the version matches the latest tagged release.'
+./node_modules/pullr/bin/pullr.js --new --from release-pr --into master --title 'Auto-generated PR to update the version number' --description 'Please review this change and ensure that package.json is the ONLY file changed AND that the version matches the latest tagged release.'
